@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "real-time-object-and-color-detection"
+version = "0.1.0"
+description = ""
+authors = ["Joel Flepp <joel_flepp@hotmail.com>"]
+readme = "README.md"
+packages = [{include = "real_time_object_and_color_detection", from = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
