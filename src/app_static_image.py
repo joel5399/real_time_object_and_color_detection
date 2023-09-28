@@ -17,17 +17,14 @@ from common.processor import ImageProcessor
 
 if __name__ == "__main__":
     imgSrc = cv.imread("res/shapes-webcam-picture.jpg", cv.IMREAD_COLOR)
-    cv.imshow("original image", imgSrc)
-    print(cv.__version__)
+
     try:
         imageProcessor = ImageProcessor()
         imageProcessor.loadImage(imgSrc)
-        cv.imshow("binary image", imageProcessor.binaryImage)
         imageProcessor.searchForPatterns()
-        imageProcessor.printProceedImg()
+        imageProcessor.displayProceedImg()
 
     except Exception as ex:
         print(ex)
-        print("something was happened!")
 
     cv.waitKey(0)

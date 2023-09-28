@@ -14,11 +14,11 @@
 
 
 class Patterns:
-    def __init__(self, numberOfCornerPoints, centerX, centerY, color):
-        self.numberOfCornerPoints = numberOfCornerPoints
+    def __init__(self, cornerPoints, centerX, centerY, color):
+        self.cornerPoints = cornerPoints
         self.centerX = centerX
         self.centerY = centerY
         self.color = color
 
     def __str__(self):
-        return f"number of corners: {self.numberOfCornerPoints}\ncenter: {self.centerX},{self.centerY}\ncolor: B = {self.color[0]}, G = {self.color[1]}, R = {self.color[2]}"
+        return f"number of corners: {len(self.cornerPoints)}\ncenter: {self.centerX},{self.centerY}\ncolor: B = {self.color[0]}, G = {self.color[1]}, R = {self.color[2]}"

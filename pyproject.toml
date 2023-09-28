@@ -9,6 +9,7 @@ packages = [{include = "real_time_object_and_color_detection", from = "src"}]
 [tool.poetry.dependencies]
 python = "^3.10"
 opencv-python = "^4.8.0.76"
+ipython = "^8.15.0"
 
 
 [build-system]

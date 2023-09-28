@@ -15,6 +15,7 @@
 import cv2 as cv
 import math
 from common.patterns import Patterns
+import IPython.display as dp
 
 
 class ImageProcessor:
@@ -34,30 +35,26 @@ class ImageProcessor:
 
     def __preImageProcessing(self):
         grayImage = cv.cvtColor(self.originalImage, cv.COLOR_BGR2GRAY)
-
-        grayImageBlur = cv.GaussianBlur(grayImage, (9, 9), 0)
-
-        _, self.binaryImage = cv.threshold(
-            grayImageBlur, 0, 255, cv.THRESH_BINARY + cv.THRESH_OTSU
-        )
-
-        _, self.binaryImage = cv.threshold(grayImageBlur, 125, 255, cv.THRESH_BINARY)
+        grayImageBlur = cv.GaussianBlur(grayImage, (5, 5), 0)
+        _, self.binaryImage = cv.threshold(grayImageBlur, 190, 255, cv.THRESH_BINARY)
 
     def __findContours(self):
         self.contours, _ = cv.findContours(
-            self.binaryImage, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE
+            self.binaryImage, cv.RETR_LIST, cv.CHAIN_APPROX_SIMPLE
         )
-        self.contours = self.contours[1:]
 
     def __findCorrectShape(self, contour):
-        shape = cv.approxPolyDP(contour, 0.01 * cv.arcLength(contour, True), True)
+        shape = cv.approxPolyDP(contour, 0.02 * cv.arcLength(contour, True), True)
+        if abs(cv.contourArea(contour) < 200 or not (cv.isContourConvex(shape))):
+            raise
+
         return shape
 
     def __getCenterOfShape(self, shape):
         moment = cv.moments(shape)
         if moment["m00"] == 0:
+            print("shape has an invalid Moment")
             return 0, 0
-            # raise Exception("shape has an invalid Moment")
 
         cx = int(moment["m10"] / moment["m00"])
         cy = int(moment["m01"] / moment["m00"])
@@ -69,10 +66,13 @@ class ImageProcessor:
     def __createPatterns(self):
         self.foundPatterns = []
         for contour in self.contours:
-            shape = self.__findCorrectShape(contour)
+            try:
+                shape = self.__findCorrectShape(contour)
+            except:
+                continue
             cx, cy = self.__getCenterOfShape(shape)
             color = self.__getColorOfShape(cx, cy)
-            self.foundPatterns.append(Patterns(len(shape), cx, cy, color))
+            self.foundPatterns.append(Patterns(shape.reshape(-1, 2), cx, cy, color))
 
     def __findDupplicateShapes(self):
         toleranceBetweenPatterns = 0.03
@@ -96,18 +96,12 @@ class ImageProcessor:
         for index in reversed(duplicatesToRemove):
             del self.foundPatterns[index]
 
-    def printProceedImg(self):
+    def displayProceedImg(self):
         for patern in self.foundPatterns:
             print(patern)
-            """
-            cv.circle(
-                self.originalImage,
-                (patern.centerX, patern.centerY),
-                5,
-                (127, 127, 127),
-                -1,
+            print("--------------------------")
+
+            cv.drawContours(
+                self.originalImage, [patern.cornerPoints], -1, (0, 255, 0), 3
             )
-            """
-        cv.drawContours(self.originalImage, self.contours, -1, (0, 255, 0), 3)
         cv.imshow("proceed image", self.originalImage)
-        cv.imshow("binary image", self.binaryImage)

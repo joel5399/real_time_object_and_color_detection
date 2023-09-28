@@ -13,15 +13,23 @@
 """
 
 import cv2 as cv
+from common.processor import ImageProcessor
 
 if __name__ == "__main__":
-
+    fps = 5
     cap_cam = cv.VideoCapture(0)
-    ret, frame = cap_cam.read()
+    imageProcessor = ImageProcessor()
 
+    while 1:
+        try:
+            _, frame = cap_cam.read()
+            imageProcessor.loadImage(frame)
+            imageProcessor.searchForPatterns()
+            imageProcessor.displayProceedImg()
 
+        except Exception as ex:
+            print(ex)
 
-
-
-
-    cv.waitKey(0)
+        c = cv.waitKey(int(1000 / fps))
+        if c == "q":
+            break
