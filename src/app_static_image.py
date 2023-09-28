@@ -13,17 +13,18 @@
 """
 
 import cv2 as cv
+from common.processor import ImageProcessor
 
 if __name__ == "__main__":
+    imgSrc = cv.imread("res/shapes-webcam-picture.jpg", cv.IMREAD_COLOR)
 
-    imgSrc = cv.imread("res/sample_image.JPG")
-    cv.imshow("Image source", imgSrc)
+    try:
+        imageProcessor = ImageProcessor()
+        imageProcessor.loadImage(imgSrc)
+        imageProcessor.searchForPatterns()
+        imageProcessor.displayProceedImg()
 
-    
-
-
-
-
+    except Exception as ex:
+        print(ex)
 
     cv.waitKey(0)
-
