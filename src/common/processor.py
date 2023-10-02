@@ -65,7 +65,7 @@ class ImageProcessor:
     def __findCorrectShape(self, contour):
         shape = cv.approxPolyDP(contour, 0.02 * cv.arcLength(contour, True), True)
         if abs(cv.contourArea(contour) < 200 or not (cv.isContourConvex(shape))):
-            raise
+            return
 
         return shape
 
@@ -85,10 +85,10 @@ class ImageProcessor:
     def __createPatterns(self):
         self.foundPatterns = []
         for contour in self.contours:
-            try:
-                shape = self.__findCorrectShape(contour)
-            except:
+            shape = self.__findCorrectShape(contour)
+            if shape is None:
                 continue
+
             cx, cy = self.__getCenterOfShape(shape)
             color = self.__getColorOfShape(cx, cy)
             self.foundPatterns.append(
