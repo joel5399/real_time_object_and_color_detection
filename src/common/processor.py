@@ -14,7 +14,7 @@
 
 import cv2 as cv
 import math
-from common.patterns import Patterns
+from common.pattern import Pattern
 import json
 
 
@@ -92,7 +92,7 @@ class ImageProcessor:
             cx, cy = self.__getCenterOfShape(shape)
             color = self.__getColorOfShape(cx, cy)
             self.foundPatterns.append(
-                Patterns(
+                Pattern(
                     shape.reshape(-1, 2), cx, cy, color, self.colorData, self.shapeData
                 )
             )
