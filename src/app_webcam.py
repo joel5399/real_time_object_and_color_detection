@@ -22,7 +22,7 @@ class WebcamApp:
     def __init__(self, fps, cameraDevice):
         self.fps = fps
         self.imageProcessor = ImageProcessor()
-        self.logger = Logger(["Object\t", "Color\t"])
+        self.logger = Logger(["Object", "Colora"])
         self.cam = Camera(cameraDevice)
         self.cam.openCamera()
 
@@ -35,7 +35,7 @@ class WebcamApp:
 
                 self.imageProcessor.loadImage(frame)
                 self.imageProcessor.searchForPatterns()
-                # self.logger.writeLogFile(self.imageProcessor.foundPatterns)
+                self.logger.logDataFromPattern(self.imageProcessor.foundPatterns)
                 self.imageProcessor.displayProceedImg()
                 if cv.waitKey(1000 // self.fps) == ord("q"):
                     break

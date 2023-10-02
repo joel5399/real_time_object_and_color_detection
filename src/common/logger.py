@@ -9,9 +9,15 @@ class Logger:
             "./log/logfile_" + self.__getDateTodayTimeNow() + ".csv", "w", newline=""
         )
         self.writer = csv.writer(self.logfile)
-        self.writeLogFile(self.columnNames, firstRow=True)
+        self.__writeLogFile(self.columnNames, firstRow=True)
 
-    def writeLogFile(self, logData, firstRow=False):
+    def logDataFromPattern(self, patterns):
+        for pattern in patterns:
+            shape = pattern.shapeString
+            color = pattern.colorString
+            self.__writeLogFile([shape, color])
+
+    def __writeLogFile(self, logData, firstRow=False):
         if not firstRow:
             logData = [self.__getDateTodayTimeNow()] + logData
         self.__checkLogData(logData)
