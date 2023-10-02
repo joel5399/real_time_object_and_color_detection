@@ -15,12 +15,13 @@
 import cv2 as cv
 import math
 from common.patterns import Patterns
-import IPython.display as dp
+import json
 
 
 class ImageProcessor:
     def __init__(self):
         self.originalImage = None
+        self.__loadPatternData()
 
     def loadImage(self, image):
         self.originalImage = image
@@ -33,10 +34,28 @@ class ImageProcessor:
         self.__createPatterns()
         self.__handlingDupplicateShapes()
 
+    def __loadPatternData(self):
+        pathToJasonFile = "./properties/pattern_properties.json"
+        jsonData = self.__openJsonFile(pathToJasonFile)
+        self.colorData = jsonData["colors"]
+        self.shapeData = jsonData["shapes"]
+
+    def __openJsonFile(self, pathToJasonFile):
+        try:
+            file = open(pathToJasonFile, "r")
+            data = json.load(file)
+            file.close()
+            return data
+
+        except FileNotFoundError:
+            print(f"file '{pathToJasonFile}' not found")
+        except json.JSONDecodeError:
+            print(f"the file'{pathToJasonFile}' has invalid json format")
+
     def __preImageProcessing(self):
         grayImage = cv.cvtColor(self.originalImage, cv.COLOR_BGR2GRAY)
         grayImageBlur = cv.GaussianBlur(grayImage, (5, 5), 0)
-        _, self.binaryImage = cv.threshold(grayImageBlur, 190, 255, cv.THRESH_BINARY)
+        _, self.binaryImage = cv.threshold(grayImageBlur, 127, 255, cv.THRESH_BINARY)
 
     def __findContours(self):
         self.contours, _ = cv.findContours(
@@ -72,7 +91,11 @@ class ImageProcessor:
                 continue
             cx, cy = self.__getCenterOfShape(shape)
             color = self.__getColorOfShape(cx, cy)
-            self.foundPatterns.append(Patterns(shape.reshape(-1, 2), cx, cy, color))
+            self.foundPatterns.append(
+                Patterns(
+                    shape.reshape(-1, 2), cx, cy, color, self.colorData, self.shapeData
+                )
+            )
 
     def __findDupplicateShapes(self):
         toleranceBetweenPatterns = 0.03
@@ -103,5 +126,15 @@ class ImageProcessor:
 
             cv.drawContours(
                 self.originalImage, [patern.cornerPoints], -1, (0, 255, 0), 3
+            )
+            cv.putText(
+                self.originalImage,
+                patern.colorString + " " + patern.shapeString,
+                (patern.centerX, patern.centerY),
+                cv.FONT_HERSHEY_SIMPLEX,
+                1,
+                (255, 255, 255),
+                2,
+                cv.LINE_AA,
             )
         cv.imshow("proceed image", self.originalImage)

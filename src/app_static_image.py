@@ -18,6 +18,12 @@ from common.processor import ImageProcessor
 if __name__ == "__main__":
     imgSrc = cv.imread("res/shapes-webcam-picture.jpg", cv.IMREAD_COLOR)
 
+    imageProcessor = ImageProcessor()
+    imageProcessor.loadImage(imgSrc)
+    imageProcessor.searchForPatterns()
+    imageProcessor.displayProceedImg()
+
+    """
     try:
         imageProcessor = ImageProcessor()
         imageProcessor.loadImage(imgSrc)
@@ -26,5 +32,5 @@ if __name__ == "__main__":
 
     except Exception as ex:
         print(ex)
-
+    """
     cv.waitKey(0)
