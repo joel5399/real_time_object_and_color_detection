@@ -2,38 +2,46 @@
     "colors": [
         {
             "name": "red",
-            "hsvRange": {
-                "h1": [0, 10],
-                "s1": [100,255],
-                "v1": [20, 255],
-                "h2": [160, 179],
-                "s2": [100,255],
-                "v2": [20, 255]
-            }
+            "hsvRange1": [0, 14],
+            "hsvRange2": [161, 180]
         },
         {
             "name": "blue",
-            "hsvRange": {
-                "h1": [105, 125]
-            }
+            "hsvRange1": [81, 115]
         },
         {
             "name": "green",
-            "hsvRange": {
-                "hue1": [50, 70]
-            }
+            "hsvRange1": [36, 80]
         },
         {
             "name": "violett",
-            "hsvRange": {
-                "hue1": [135, 155]
-            }
+            "hsvRange1": [116, 160]
         },
         {
             "name": "yellow",
-            "hsvRange": {
-                "hue1": [20, 40]
-            }
+            "hsvRange1": [15, 35]
+        }
+    ],
+    "shapes": [
+        {
+            "name": "square",
+            "cornerCount": [4,4],
+            "edgeRatio": [0, 1.1]
+        },
+        {
+            "name": "rectangle",
+            "cornerCount": [4,4],
+            "edgeRatio": [1.1, 5.0]
+        },
+        {
+            "name": "triangle",
+            "cornerCount": [3,3],
+            "edgeRatio": [0]
+        },
+        {
+            "name": "circle",
+            "cornerCount": [5, 10000],
+            "edgeRatio": [0]
         }
     ]
 }
