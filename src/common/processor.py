@@ -21,7 +21,7 @@ import json
 class ImageProcessor:
     def __init__(self):
         self.originalImage = None
-        self.__extractColorRanges()
+        self.__loadPatternData()
 
     def loadImage(self, image):
         self.originalImage = image
@@ -34,7 +34,7 @@ class ImageProcessor:
         self.__createPatterns()
         self.__handlingDupplicateShapes()
 
-    def __extractColorRanges(self):
+    def __loadPatternData(self):
         pathToJasonFile = "./properties/pattern_properties.json"
         jsonData = self.__openJsonFile(pathToJasonFile)
         self.colorData = jsonData["colors"]
