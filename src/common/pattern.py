@@ -16,7 +16,7 @@ import cv2 as cv
 import numpy as np
 
 
-class Patterns:
+class Pattern:
     def __init__(
         self, cornerPoints, centerX, centerY, colorBGR, colorTypes, shapeTypes
     ):
