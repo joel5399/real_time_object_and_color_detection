@@ -14,22 +14,40 @@
 
 import cv2 as cv
 from common.processor import ImageProcessor
+from common.camera import Camera
+from common.logger import Logger
 
-if __name__ == "__main__":
-    fps = 5
-    cap_cam = cv.VideoCapture(0)
-    imageProcessor = ImageProcessor()
 
-    while 1:
+class WebcamApp:
+    def __init__(self, fps, cameraDevice):
+        self.fps = fps
+        self.imageProcessor = ImageProcessor()
+        self.logger = Logger(["Object", "Colora"])
+        self.cam = Camera(cameraDevice)
+        self.cam.openCamera()
+
+    def run(self):
         try:
-            _, frame = cap_cam.read()
-            imageProcessor.loadImage(frame)
-            imageProcessor.searchForPatterns()
-            imageProcessor.displayProceedImg()
+            while True:
+                frame = self.cam.readImage()
+                if len(frame) == 0:
+                    continue
+
+                self.imageProcessor.loadImage(frame)
+                self.imageProcessor.searchForPatterns()
+                self.logger.logDataFromPattern(self.imageProcessor.foundPatterns)
+                self.imageProcessor.displayProceedImg()
+                if cv.waitKey(1000 // self.fps) == ord("q"):
+                    break
 
         except Exception as ex:
-            print(ex)
+            print(f"exception: {ex}")
 
-        c = cv.waitKey(int(1000 / fps))
-        if c == "q":
-            break
+        finally:
+            self.cam.closeCamera()
+            cv.destroyAllWindows()
+
+
+if __name__ == "__main__":
+    app = WebcamApp(fps=20, cameraDevice=0)
+    app.run()
