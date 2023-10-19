@@ -18,9 +18,22 @@ from common.camera import Camera
 from common.logger import Logger
 from common.image_visualisation import ImageVisualizer
 
+"""
+Class description:
+The WebcamApp continously loads images from given camera device 
+and searches the images for shapes and colors matching the requirements 
+from the settings.
+"""
+
 
 class WebcamApp:
     def __init__(self, fps, cameraDevice):
+        """
+        Constructor
+        Create all necessary objects to run application
+        :param fps: how many frames per second should be progressed
+        :param cameraDevice: id of camera device which should be used as integer
+        """
         self.fps = fps
         self.imageProcessor = ImageProcessor()
         self.logger = Logger(["Object", "Colora"])
@@ -29,6 +42,9 @@ class WebcamApp:
         self.cam.openCamera()
 
     def run(self):
+        """
+        All processes combined and handling of Exceptions
+        """
         try:
             while True:
                 frame = self.cam.readImage()
