@@ -52,8 +52,17 @@ sequenceDiagram
 
 ## Run Application
 There are two options when it comes to execute the application:
-1. Load and process a _single_ image from the filesystem [here](./src/app_static_image.py).
+1. Load and process a _single_ image from the filesystem [here](./src/app_static_image.py).   
 2. _Continously_ load images and process them from a given camera device (such as webcams) [here](./src/app_webcam.py).
+
+The command to start an application should look like this:
+```bash
+poetry run python .\src\app_webcam.py
+```
+or
+```bash
+poetry run python .\src\app_static_image.py
+```
 
 The first option is primarily ment for testing purposes. But the process is except for the amount of images exactly the same.
 
