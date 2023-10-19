@@ -4,6 +4,8 @@ import csv
 
 class Logger:
     def __init__(self, columnNames):
+        self.tolerance = 10  # +/- pxl tolerance
+        self.lastFramePatterns = []
         self.columnNames = ["Time"] + columnNames
         self.logfile = open(
             "./log/logfile_" + self.__getDateTodayTimeNow() + ".csv", "w", newline=""
@@ -13,9 +15,12 @@ class Logger:
 
     def logDataFromPattern(self, patterns):
         for pattern in patterns:
-            shape = pattern.shapeString
-            color = pattern.colorString
-            self.__writeLogFile([shape, color])
+            if not self.__PatternAlreadyExists(pattern):
+                shape = pattern.shapeString
+                color = pattern.colorString
+                self.__writeLogFile([shape, color])
+
+        self.__updateLastFramePatterns(patterns)
 
     def __writeLogFile(self, logData, firstRow=False):
         if not firstRow:
@@ -32,23 +37,21 @@ class Logger:
     def __getDateTodayTimeNow(self):
         return datetime.now().strftime("%b-%d-%Y_%H-%M-%S")
 
+    def __PatternAlreadyExists(self, paternToCheck):
+        centerX = paternToCheck.centerX
+        centerY = paternToCheck.centerY
+        for lastFramePattern in self.lastFramePatterns:
+            centerXRange = range(
+                lastFramePattern.centerX - self.tolerance,
+                lastFramePattern.centerX + self.tolerance,
+            )
+            centerYRange = range(
+                lastFramePattern.centerY - self.tolerance,
+                lastFramePattern.centerY + self.tolerance,
+            )
+            if centerX in centerXRange and centerY in centerYRange:
+                return True
+        return False
 
-if __name__ == "__main__":
-    columnNames = ["Number", "Object", "Colour"]
-
-    dataframe1 = ["1", "triangle", "red"]
-    dataframe2 = ["2", "circle", "yellow"]
-    dataframe3 = ["3", "square", "blue"]
-
-    try:
-        logger = Logger(columnNames)
-        logger.writeLogFile(dataframe1)
-        logger.writeLogFile(dataframe2)
-        logger.writeLogFile(dataframe3)
-
-    except Exception as ex:
-        print(ex)
-    finally:
-        logger.logfile.close()
-
-    print(f"Logfile closed: {logger.logfile.closed}")
+    def __updateLastFramePatterns(self, paterns):
+        self.lastFramePatterns = paterns
