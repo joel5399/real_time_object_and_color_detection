@@ -18,9 +18,21 @@ from common.logger import Logger
 from common.image_reader import ImageReader
 from common.image_visualisation import ImageVisualizer
 
+"""
+Class description:
+The StaticImage class loads an image from the filesystem 
+and searches the image for shapes and colors matching the requirements 
+from the settings.
+"""
+
 
 class StaticImageApp:
     def __init__(self, pathToImage):
+        """
+        Constructor
+        Create all necessary objects to run application
+        :param pathToImage: path to the image as string
+        """
         self.pathToImage = pathToImage
         self.imageProcessor = ImageProcessor()
         self.logger = Logger(["Object", "Colora"])
@@ -28,6 +40,9 @@ class StaticImageApp:
         self.imageVisualizer = ImageVisualizer("imported image")
 
     def run(self):
+        """
+        All processes combined and handling of Exceptions
+        """
         try:
             image = self.imageReader.readImage(self.pathToImage)
             self.imageProcessor.loadImage(image)
