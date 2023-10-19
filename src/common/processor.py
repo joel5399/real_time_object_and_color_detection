@@ -14,7 +14,7 @@ class ImageProcessor:
     def __init__(self):
         """
         Constructor
-        Initialisation and load predefined patterns.
+        Initialisation and load predefined pattern data (color and shape).
         """
         self.originalImage = None
         self.__loadPatternData()
@@ -29,7 +29,7 @@ class ImageProcessor:
 
     def searchForPatterns(self):
         """
-        Create patterns in an image by the found contours.
+        Searches and creates patterns found in image.
         """
         if self.originalImage is None:
             raise Exception("Load image before searching for patterns!")
@@ -39,7 +39,7 @@ class ImageProcessor:
 
     def __loadPatternData(self):
         """
-        Load predefined patterns and split in colors and shapes.
+        Load predefined pattern data and split in colors and shapes.
         """
         pathToJasonFile = "./properties/pattern_properties.json"
         jsonData = self.__openJsonFile(pathToJasonFile)
@@ -83,7 +83,7 @@ class ImageProcessor:
         """
         Find valid contours -> Contour area sufficient.
         :param: contour: List of points of one contour
-        :return: valid shape
+        :return: shape if shape has a sufficient area else, return none
         """
         shape = cv.approxPolyDP(contour, 0.02 * cv.arcLength(contour, True), True)
         if abs(cv.contourArea(contour) < 200 or not (cv.isContourConvex(shape))):
