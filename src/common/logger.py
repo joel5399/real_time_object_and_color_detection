@@ -3,8 +3,8 @@ import csv
 
 """
 Class description:
-The Image Processor class processes an image, 
-to find the predefined shapes and colors in it.
+The Logger class takes the found patterns
+and saves their properties in an csv file.
 """
 
 
@@ -12,8 +12,8 @@ class Logger:
     def __init__(self, columnNames, tolerance=20):
         """
         Constructor
-        open csv file and write first row with the names
-        :param columnNames: list of names witch will be written at the top of the file.
+        open csv file and set title of the columns
+        :param columnNames: list of column titles.
         :param tolerance: tolerance for comparison between the center points in pixel.
 
         """
@@ -28,9 +28,9 @@ class Logger:
 
     def logDataFromPattern(self, patterns):
         """
-        checks if the Pattern was already existing in last frame,
-        if not, write shape and color in log file.
-        :param patterns: all the patterns founded in current frame as list of Pattern
+        checks wether the Pattern already existed in last frame or not,
+        if not, the shape and color is written in the log file.
+        :param patterns: all the patterns found in the current frame as a list of Patterns
         """
         for pattern in patterns:
             if not self.__PatternAlreadyExists(pattern):
@@ -43,8 +43,8 @@ class Logger:
     def __writeLogFile(self, logData, firstRow=False):
         """
         writes the logdata to the csv-file.
-        :param logData: list of stirngs whitch contains data to write
-        :param firsRow: boolean to set if you want to write the first line
+        :param logData: list of strings whitch contains the data to log
+        :param firsRow: boolean to define wether you want to write the first row or not
         """
         if not firstRow:
             logData = [self.__getDateTodayTimeNow()] + logData
@@ -63,7 +63,7 @@ class Logger:
 
     def __getDateTodayTimeNow(self):
         """
-        :return: time of hte day seperated with dashes
+        :return: current time and date seperated with dashes
         """
         return datetime.now().strftime("%b-%d-%Y_%H-%M-%S")
 
@@ -71,7 +71,7 @@ class Logger:
         """
         checks if pattern has the same center as one before
         :param patternToCheck: pattern witch has to be checked
-        :return: true if the pattern has te same center as one before
+        :return: true if the pattern has te same center as another one
         """
         centerX = patternToCheck.centerX
         centerY = patternToCheck.centerY
@@ -90,7 +90,7 @@ class Logger:
 
     def __updateLastFramePatterns(self, patterns):
         """
-        updates the founded patterns so they can be compared in the next frame
+        updates the found patterns so they can be compared in the next frame
         :param patterns: list of patterns to update
         """
         self.lastFramePatterns = patterns
