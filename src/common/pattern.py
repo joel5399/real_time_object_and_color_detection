@@ -1,25 +1,26 @@
-"""
- * @Projectname:        REAL_TIME_OBJECT_AND_COLOR_DETECTION
- *
- * @Description:        process an image from filesystem
- *                      
- * @IDE:                VSCode
- * @Language:           python
- * @Interpreter:        Python 3.9.16
- * @Platform            Windows 11 Pro
- *
- * @Creation date:      25.09.2023
- * @Creator:            Joshua Stutz & Joel Flepp            
-"""
-
 import cv2 as cv
 import numpy as np
+
+"""
+Class description:
+The The Pattern class contains the characteristics that defines a pattern.
+"""
 
 
 class Pattern:
     def __init__(
         self, cornerPoints, centerX, centerY, colorBGR, colorTypes, shapeTypes
     ):
+        """
+        Constructor
+        creates a pattern and assign the color and shape as string
+        :param cornerPoints: list containing all corner Points of the shape as cv points
+        :param centerX: X-coordinate of the shape center point
+        :param centerY: Y-coordinate of the shape center point
+        :param colorBGR: color in the center of the shape as tuple
+        :param colorTypes: color types provided in the pattern properties file
+        :param shapeTypes: shape types provided in the pattern properties file
+        """
         self.cornerPoints = cornerPoints
         self.centerX = centerX
         self.centerY = centerY
@@ -27,9 +28,19 @@ class Pattern:
         self.shapeString = self.__assignShapeClasses(cornerPoints, shapeTypes)
 
     def __str__(self):
+        """
+        Get readable string representation of object
+        :return: String representation of object
+        """
         return f"shape: {self.shapeString}\ncenter: {self.centerX},{self.centerY}\n color: {self.colorString}"
 
     def __assignColorClasses(self, colorBGR, colorTypes):
+        """
+        assign BGR to provided colortype
+        :param colorBGR: color as tuple
+        :param colorTypes: color types provided in the pattern properties file
+        :return: color as string if avaible else string "unknown color"
+        """
         if colorTypes is None:
             raise Exception("No possible collors")
 
@@ -47,6 +58,12 @@ class Pattern:
         return "unknown color"
 
     def __assignShapeClasses(self, cornerPoints, shapeTypes):
+        """
+        assign shape to provided shapetype
+        :param cornerPoints: color as tuple
+        :param shapeTypes: shape types provided in the pattern properties file
+        :return: shape as string if avaible else string "unknown shape"
+        """
         if shapeTypes is None:
             raise Exception("No possible shapes")
 
@@ -69,6 +86,10 @@ class Pattern:
         return "unknown shape"
 
     def __getSideRatio(self, cornerPoints):
+        """
+        compares the smalest and the longest side and compute their ratio
+        :param cornerPoints: list containing all corner Points of the shape as cv points
+        """
         sides = []
         for i in range(len(cornerPoints)):
             if i != len(cornerPoints) - 1:
