@@ -160,23 +160,3 @@ class ImageProcessor:
         duplicatesToRemove = self.__findDupplicateShapes()
         for index in reversed(duplicatesToRemove):
             del self.foundPatterns[index]
-
-    def displayProceedImg(self):
-        for patern in self.foundPatterns:
-            print(patern)
-            print("--------------------------")
-
-            cv.drawContours(
-                self.originalImage, [patern.cornerPoints], -1, (0, 255, 0), 3
-            )
-            cv.putText(
-                self.originalImage,
-                patern.colorString + " " + patern.shapeString,
-                (patern.centerX, patern.centerY),
-                cv.FONT_HERSHEY_SIMPLEX,
-                1,
-                (255, 255, 255),
-                2,
-                cv.LINE_AA,
-            )
-        cv.imshow("proceed image", self.originalImage)
