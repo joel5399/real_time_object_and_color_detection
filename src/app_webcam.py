@@ -16,6 +16,7 @@ import cv2 as cv
 from common.processor import ImageProcessor
 from common.camera import Camera
 from common.logger import Logger
+from common.image_visualisation import ImageVisualizer
 
 
 class WebcamApp:
@@ -23,6 +24,7 @@ class WebcamApp:
         self.fps = fps
         self.imageProcessor = ImageProcessor()
         self.logger = Logger(["Object", "Colora"])
+        self.imageVisualizer = ImageVisualizer("live Cam")
         self.cam = Camera(cameraDevice)
         self.cam.openCamera()
 
@@ -36,7 +38,9 @@ class WebcamApp:
                 self.imageProcessor.loadImage(frame)
                 self.imageProcessor.searchForPatterns()
                 self.logger.logDataFromPattern(self.imageProcessor.foundPatterns)
-                self.imageProcessor.displayProceedImg()
+                self.imageVisualizer.displayImgWithPatterns(
+                    frame, self.imageProcessor.foundPatterns
+                )
                 if cv.waitKey(1000 // self.fps) == ord("q"):
                     break
 

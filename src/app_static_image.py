@@ -16,6 +16,7 @@ import cv2 as cv
 from common.processor import ImageProcessor
 from common.logger import Logger
 from common.image_reader import ImageReader
+from common.image_visualisation import ImageVisualizer
 
 
 class StaticImageApp:
@@ -24,6 +25,7 @@ class StaticImageApp:
         self.imageProcessor = ImageProcessor()
         self.logger = Logger(["Object", "Colora"])
         self.imageReader = ImageReader()
+        self.imageVisualizer = ImageVisualizer("imported image")
 
     def run(self):
         try:
@@ -31,7 +33,9 @@ class StaticImageApp:
             self.imageProcessor.loadImage(image)
             self.imageProcessor.searchForPatterns()
             self.logger.logDataFromPattern(self.imageProcessor.foundPatterns)
-            self.imageProcessor.displayProceedImg()
+            self.imageVisualizer.displayImgWithPatterns(
+                image, self.imageProcessor.foundPatterns
+            )
             cv.waitKey()
 
         except Exception as ex:
