@@ -9,7 +9,7 @@
  * @Platform            Windows 11 Pro
  *
  * @Creation date:      25.09.2023
- * @Creator:            Joshua Stutz              
+ * @Creator:            Joshua Stutz & Joel Flepp              
 """
 
 import cv2 as cv
@@ -31,7 +31,7 @@ class WebcamApp:
         """
         Constructor
         Create all necessary objects to run application
-        :param fps: how many frames per second should be progressed
+        :param fps: how many frames per second should be progressed passed as int
         :param cameraDevice: id of camera device which should be used as integer
         """
         self.fps = fps
