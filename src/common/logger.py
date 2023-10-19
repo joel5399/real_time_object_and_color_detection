@@ -67,14 +67,14 @@ class Logger:
         """
         return datetime.now().strftime("%b-%d-%Y_%H-%M-%S")
 
-    def __PatternAlreadyExists(self, paternToCheck):
+    def __PatternAlreadyExists(self, patternToCheck):
         """
-        checks if patern has the same center as one before
-        :param paternToCheck: patern witch has to be checked
-        :return: true if the patern has te same center as one before
+        checks if pattern has the same center as one before
+        :param patternToCheck: pattern witch has to be checked
+        :return: true if the pattern has te same center as one before
         """
-        centerX = paternToCheck.centerX
-        centerY = paternToCheck.centerY
+        centerX = patternToCheck.centerX
+        centerY = patternToCheck.centerY
         for lastFramePattern in self.lastFramePatterns:
             centerXRange = range(
                 lastFramePattern.centerX - self.tolerance,
@@ -88,9 +88,9 @@ class Logger:
                 return True
         return False
 
-    def __updateLastFramePatterns(self, paterns):
+    def __updateLastFramePatterns(self, patterns):
         """
         updates the founded patterns so they can be compared in the next frame
-        :param paterns: list of patterns to update
+        :param patterns: list of patterns to update
         """
-        self.lastFramePatterns = paterns
+        self.lastFramePatterns = patterns
