@@ -5,7 +5,8 @@ as a group project by [Joshua Stutz](https://github.com/FidibusHex45) and  [Joel
 semester. The Project definition is stored [here](./requirements/Software_Engineering_Project_Definition_V1.pdf).
 
 ## structure documentation
-This README provides a concise overview of the entire project. Further details and information can be found inside the classes.
+This README provides a concise overview of the entire project. Further details and information can be found in the [project documentation](./doc/html/index.html).
+
 
 ## Software architecture
 ### Static image Application architecture
@@ -47,6 +48,180 @@ sequenceDiagram
     Pattern->>WebcamApp: foundPatterns
     WebcamApp->>Logger: foundPatterns
     WebcamApp->>ImageVisualizer: frame & foundPatterns
+```
+
+## Class diagramms
+### Static image class diagramm
+``` mermaid
+classDiagram
+    class StaticImageApp {
+    +pathToImage
+    +imageProcessor
+    +logger
+    +imageReader
+    +imageVisualizer
+    +__init__(self, pathToImage)
+    +run(self)
+  }
+
+  class ImageReader {
+    +__init__(self)
+    +readImage(self, pathToImage)
+  }
+
+  class ImageVisualizer {
+    +lineColor
+    +textColor
+    +windowName
+    +__init__(self, windowName, lineColor, textColor)
+    +displayImgWithPatterns(self, frame, foundedPatterns)
+    +printFoundedPatterns(self, foundedPatterns)
+    -__addContoursToImage(self, frame, foundedPatterns)
+  }
+
+  class Logger {
+    +tolerance
+    +lastFramePatterns
+    +columnNames
+    +columnNames
+    +writer
+    +__init__(self, columnNames, tolerance)
+    +logDataFromPattern(self, patterns)
+    -__writeLogFile(self, logData, firstRow)
+    -__checkLogData(self, logData)
+    -__getDateTodayTimeNow(self)
+    -__PatternAlreadyExists(self, patternToCheck)
+    -__updateLastFramePatterns(self, patterns)
+  }
+
+  class Pattern {
+    +cornerPoints
+    +centerX
+    +centerY
+    +colorString
+    +shapeString
+    +__init__(self, cornerPoints, centerX, centerY, 
+        colorBGR, colorTypes, shapeTypes)
+    +__str__(self)
+    -__assignColorClasses(self, colorBGR, colorTypes)
+    -__assignShapeClasses(self, cornerPoints, shapeTypes)
+    -__getSideRatio(self, cornerPoints)
+  }
+
+  class ImageProcessor {
+    +originalImage
+    +colorData
+    +shapeData
+    +contours
+    +foundPatterns
+    +__init__(self)
+    +loadImage(self, image)
+    +searchForPatterns(self)
+    -__loadPatternData(self)
+    -__openJsonFile(self, pathToJasonFile)
+    -__preImageProcessing(self)
+    -__findContours(self)
+    -__findCorrectShape(self, contour)
+    -__getCenterOfShape(self, shape)
+    -__getColorOfShape(self, cx, cy)
+    -__createPatterns(self)
+    -__findDupplicateShapes(self)
+    -__handlingDupplicateShapes(self)
+  }
+
+  StaticImageApp --|>  ImageProcessor
+  StaticImageApp --|>  Logger
+  StaticImageApp --|>  ImageReader
+  StaticImageApp --|>  ImageVisualizer
+  ImageProcessor --|> Pattern
+```
+### Webcam class diagramm
+``` mermaid
+classDiagram
+    class WebcamApp {
+    +fps
+    +imageProcessor
+    +logger
+    +imageVisualizer
+    +cam
+    +__init__(self, fps, cameraDevice)
+    +run(self)
+  }
+
+  class Camera {
+    +cameraDevice
+    +cam
+    +__init__(self,cameraDevice)
+    +openCamera(self)
+    +readImage(self)
+    +closeCamera(self)
+  }
+
+  class ImageVisualizer {
+    +lineColor
+    +textColor
+    +windowName
+    +__init__(self, windowName, lineColor, textColor)
+    +displayImgWithPatterns(self, frame, foundedPatterns)
+    +printFoundedPatterns(self, foundedPatterns)
+    -__addContoursToImage(self, frame, foundedPatterns)
+  }
+
+  class Logger {
+    +tolerance
+    +lastFramePatterns
+    +columnNames
+    +columnNames
+    +writer
+    +__init__(self, columnNames, tolerance)
+    +logDataFromPattern(self, patterns)
+    -__writeLogFile(self, logData, firstRow)
+    -__checkLogData(self, logData)
+    -__getDateTodayTimeNow(self)
+    -__PatternAlreadyExists(self, patternToCheck)
+    -__updateLastFramePatterns(self, patterns)
+  }
+
+  class Pattern {
+    +cornerPoints
+    +centerX
+    +centerY
+    +colorString
+    +shapeString
+    +__init__(self, cornerPoints, centerX, centerY, 
+        colorBGR, colorTypes, shapeTypes)
+    +__str__(self)
+    -__assignColorClasses(self, colorBGR, colorTypes)
+    -__assignShapeClasses(self, cornerPoints, shapeTypes)
+    -__getSideRatio(self, cornerPoints)
+  }
+
+  class ImageProcessor {
+    +originalImage
+    +colorData
+    +shapeData
+    +contours
+    +foundPatterns
+    +__init__(self)
+    +loadImage(self, image)
+    +searchForPatterns(self)
+    -__loadPatternData(self)
+    -__openJsonFile(self, pathToJasonFile)
+    -__preImageProcessing(self)
+    -__findContours(self)
+    -__findCorrectShape(self, contour)
+    -__getCenterOfShape(self, shape)
+    -__getColorOfShape(self, cx, cy)
+    -__createPatterns(self)
+    -__findDupplicateShapes(self)
+    -__handlingDupplicateShapes(self)
+  }
+
+  WebcamApp --|>  ImageProcessor
+  WebcamApp --|>  Logger
+  WebcamApp --|>  Camera
+  WebcamApp --|>  ImageVisualizer
+  ImageProcessor --|> Pattern
 ```
 
 
