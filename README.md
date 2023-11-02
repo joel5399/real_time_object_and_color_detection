@@ -5,7 +5,8 @@ as a group project by [Joshua Stutz](https://github.com/FidibusHex45) and  [Joel
 semester. The Project definition is stored [here](./requirements/Software_Engineering_Project_Definition_V1.pdf).
 
 ## structure documentation
-This README provides a concise overview of the entire project. Further details and information can be found in the [project documentation](./doc/html/index.html).
+This README provides a concise overview of the entire project. Further details and information can be found in the project documentation. To navigate thew  the documentation, open [this](./doc/html/index.html) file in your browser.
+
 
 
 ## Software architecture
