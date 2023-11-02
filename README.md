@@ -239,8 +239,9 @@ or
 ```bash
 poetry run python .\src\app_static_image.py
 ```
-
 The first option is primarily ment for testing purposes. But the process is except for the amount of images exactly the same.
+
+To stop the webcam application press 'q' on the keyboard.
 
 ## Read images
 The images will be captured using a webcam connected via USB to the laptop where the application will run. For testing purposes you can also run the application with a static image. Detailed information about the implemention can be found [here](./src/common/image_reader.py)
